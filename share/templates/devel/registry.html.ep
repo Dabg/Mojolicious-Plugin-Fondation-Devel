@@ -98,12 +98,12 @@
         % if ($entry->{dbic} && $entry->{dbic}{total_added}) {
           <h5 class="mt-4">DBIC Components</h5>
           <div class="row">
-            % if (@{$entry->{dbic}{results}}) {
+            % if ($entry->{dbic}{result_classes} && %{$entry->{dbic}{result_classes}}) {
               <div class="col-md-6">
-                <strong>Results (<%= scalar @{$entry->{dbic}{results}} %>)</strong>
+                <strong>Result Classes (<%= scalar keys %{$entry->{dbic}{result_classes}} %>)</strong>
                 <ul class="list-group list-group-flush small">
-                  % for my $r (@{$entry->{dbic}{results}}) {
-                    <li class="list-group-item"><%= $r %></li>
+                  % for my $table (sort keys %{$entry->{dbic}{result_classes}}) {
+                    <li class="list-group-item"><%= $table %> → <%= $entry->{dbic}{result_classes}{$table} %></li>
                   % }
                 </ul>
               </div>
