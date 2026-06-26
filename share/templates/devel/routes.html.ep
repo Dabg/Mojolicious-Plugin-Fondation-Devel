@@ -1,0 +1,74 @@
+% layout 'main';
+% title 'Fondation Routes';
+
+<div class="container-fluid mt-4">
+  <h1 class="mb-4">Fondation Routes</h1>
+
+  <div class="row mb-4">
+    <div class="col-auto">
+      <div class="alert alert-info">
+        <strong>Mode :</strong> <%= $c->app->mode %> &nbsp;&nbsp;
+        <strong>Total routes :</strong> <%= scalar @$routes %>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-sm table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Method</th>
+          <th>Path</th>
+          <th>Type</th>
+          <th>Protection</th>
+        </tr>
+      </thead>
+      <tbody>
+        % for my $r (@$routes) {
+          <tr>
+            <td class="text-nowrap">
+              % for my $m (@{$r->{methods}}) {
+                <span class="badge bg-secondary me-1"><%= uc $m %></span>
+              % }
+              % unless (@{$r->{methods}}) {
+                <span class="badge bg-light text-dark">*</span>
+              % }
+            </td>
+            <td class="font-monospace small"><%= $r->{path} %></td>
+            <td>
+              % if ($r->{type} eq 'api') {
+                <span class="badge bg-info">API</span>
+              % } else {
+                <span class="badge bg-primary">HTML</span>
+              % }
+            </td>
+            <td>
+              % my $p = $r->{protection};
+              % my @tags;
+              % for my $perm (@{$p->{perms}}) {
+                % push @tags, qq{<span class="badge bg-danger me-1">perm: $perm</span>};
+              % }
+              % for my $group (@{$p->{groups}}) {
+                % push @tags, qq{<span class="badge bg-warning text-dark me-1">group: $group</span>};
+              % }
+              % if (defined $p->{authenticated}) {
+                % if ($p->{authenticated}) {
+                  % push @tags, qq{<span class="badge bg-success me-1">authenticated</span>};
+                % } else {
+                  % push @tags, qq{<span class="badge bg-secondary me-1">!authenticated</span>};
+                % }
+              % } elsif (@{$p->{perms}} || @{$p->{groups}}) {
+                % push @tags, qq{<span class="badge bg-success me-1">authenticated</span>};
+              % }
+              % if (@tags) {
+                %== join '', @tags;
+              % } else {
+                <span class="badge bg-light text-dark">public</span>
+              % }
+            </td>
+          </tr>
+        % }
+      </tbody>
+    </table>
+  </div>
+</div>
