@@ -13,6 +13,41 @@
     </div>
   </div>
 
+  %# ─── CSRF legend ────────────────────────────────────────────────────────────
+  % my $has_csrf = 0;
+  % for my $r (@$routes) {
+  %   if (defined $r->{csrf}) { $has_csrf = 1; last; }
+  % }
+  % if ($has_csrf) {
+  <div class="row mb-3">
+    <div class="col">
+      <div class="card border-secondary">
+        <div class="card-header py-1"><strong>CSRF Protection</strong></div>
+        <div class="card-body py-2">
+          <table class="table table-sm table-borderless mb-0 small">
+            <tr>
+              <td class="text-nowrap pe-2"><span class="badge bg-success">CSRF</span></td>
+              <td>Explicit — route declares <code>requires('fondation.csrf')</code> (e.g. OpenAPI POST/PUT/PATCH/DELETE routes)</td>
+            </tr>
+            <tr>
+              <td class="text-nowrap pe-2"><span class="badge bg-info">CSRF: blanket</span></td>
+              <td>Blanket — protected by <code>auto_protect=1</code> (default). All POST/PUT/PATCH/DELETE routes are covered unless exempted.</td>
+            </tr>
+            <tr>
+              <td class="text-nowrap pe-2"><span class="badge bg-secondary">CSRF: exempt</span></td>
+              <td>Exempt — path matches an <code>exemptions</code> regex pattern, excluded from blanket protection.</td>
+            </tr>
+            <tr>
+              <td class="text-nowrap pe-2"><span class="badge bg-warning text-dark">CSRF: off</span></td>
+              <td>Off — <code>auto_protect=0</code> and no explicit <code>fondation.csrf</code> on the route.</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  % }
+
   <div class="table-responsive">
     <table class="table table-sm table-bordered table-hover">
       <thead class="table-dark">
@@ -60,6 +95,21 @@
               % } elsif (@{$p->{perms}} || @{$p->{groups}}) {
                 % push @tags, qq{<span class="badge bg-success me-1">authenticated</span>};
               % }
+
+              %# ─── CSRF status badge ──────────────────────────────────────────
+              % my $csrf = $r->{csrf};
+              % if (defined $csrf) {
+                % if ($csrf eq 'explicit') {
+                  % push @tags, qq{<span class="badge bg-success me-1">CSRF</span>};
+                % } elsif ($csrf eq 'blanket') {
+                  % push @tags, qq{<span class="badge bg-info me-1">CSRF: blanket</span>};
+                % } elsif ($csrf eq 'exempt') {
+                  % push @tags, qq{<span class="badge bg-secondary me-1">CSRF: exempt</span>};
+                % } elsif ($csrf eq 'disabled') {
+                  % push @tags, qq{<span class="badge bg-warning text-dark me-1">CSRF: off</span>};
+                % }
+              % }
+
               % if (@tags) {
                 %== join '', @tags;
               % } else {
