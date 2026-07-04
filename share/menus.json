@@ -1,0 +1,30 @@
+[
+  {
+    "title":        "Devel",
+    "link":         "",
+    "icon":         "fas fa-tools",
+    "icon_color":   "#000000",
+    "menu":         "devel_menu",
+    "condition":    "group:admin,mode:!production",
+    "parent_title": null,
+    "description":  "Development tools"
+  },
+  {
+    "title":        "Routes",
+    "link":         "/fondation/routes",
+    "icon":         "fas fa-route",
+    "menu":         "devel_menu",
+    "condition":    "group:admin,mode:!production",
+    "parent_title": "Devel",
+    "description":  "Browse registered routes and their protection status"
+  },
+  {
+    "title":        "Registry",
+    "link":         "/fondation/registry",
+    "icon":         "fas fa-cubes",
+    "menu":         "devel_menu",
+    "condition":    "group:admin,mode:!production",
+    "parent_title": "Devel",
+    "description":  "Browse loaded plugins, their config, and resources"
+  }
+]
