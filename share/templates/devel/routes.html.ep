@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  %# ─── CSRF legend ────────────────────────────────────────────────────────────
+  %# --- CSRF legend ------------------------------------------------------------
   % my $has_csrf = 0;
   % for my $r (@$routes) {
   %   if (defined $r->{csrf}) { $has_csrf = 1; last; }
@@ -80,6 +80,12 @@
             <td>
               % my $p = $r->{protection};
               % my @tags;
+
+              %# --- Bearer protection badge ----------------------------------
+              % if ($p->{bearer}) {
+                % push @tags, qq{<span class="badge bg-info me-1">Bearer</span>};
+              % }
+
               % for my $perm (@{$p->{perms}}) {
                 % push @tags, qq{<span class="badge bg-danger me-1">perm: $perm</span>};
               % }
@@ -96,7 +102,7 @@
                 % push @tags, qq{<span class="badge bg-success me-1">authenticated</span>};
               % }
 
-              %# ─── CSRF status badge ──────────────────────────────────────────
+              %# --- CSRF status badge ------------------------------------------
               % my $csrf = $r->{csrf};
               % if (defined $csrf) {
                 % if ($csrf eq 'explicit') {

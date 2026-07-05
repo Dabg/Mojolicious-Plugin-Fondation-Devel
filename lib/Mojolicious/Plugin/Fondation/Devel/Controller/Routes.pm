@@ -8,7 +8,7 @@ use Mojo::File 'path';
 
 sub routes ($c) {
 
-    # ─── Gather CSRF config if the plugin is loaded ────────────────────────────
+    # --- Gather CSRF config if the plugin is loaded ----------------------------
 
     my $csrf_config;
     my $manager = $c->app->manager;
@@ -19,7 +19,7 @@ sub routes ($c) {
         }
     }
 
-    # ─── Walk the route tree ──────────────────────────────────────────────────
+    # --- Walk the route tree --------------------------------------------------
 
     my @all_routes;
     _walk($c->app->routes, '', \@all_routes, $csrf_config);
@@ -113,6 +113,7 @@ sub _extract_protection ($route) {
     my @perms;
     my @groups;
     my $authenticated;       # undef = not set, 0 = !auth, 1 = auth required
+    my $bearer;
 
     for (my $i = 0; $i < @$requires; $i++) {
         my $cond = $requires->[$i];
@@ -128,13 +129,17 @@ sub _extract_protection ($route) {
             my $value = $requires->[$i + 1];
             $authenticated = $value ? 1 : 0;
         }
+        elsif ($cond eq 'fondation.bearer') {
+            $bearer = 1;
+        }
     }
 
     return {
         perms         => \@perms,
         groups        => \@groups,
         authenticated => $authenticated,
-        has_auth      => (defined $authenticated || @perms || @groups) ? 1 : 0,
+        bearer        => $bearer,
+        has_auth      => (defined $authenticated || @perms || @groups || $bearer) ? 1 : 0,
     };
 }
 
