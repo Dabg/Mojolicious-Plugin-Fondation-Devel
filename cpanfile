@@ -5,6 +5,7 @@ requires 'perl' => '5.026';
 
 # Runtime dependencies
 requires 'Mojolicious::Plugin::Fondation', '>= 0.02';
+requires 'Mojolicious::Plugin::Fondation::CSRF', '>= 0.01';
 
 # Testing dependencies
 on test => sub {

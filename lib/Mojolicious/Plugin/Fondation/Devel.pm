@@ -8,7 +8,7 @@ our $VERSION = '0.01';
 
 sub fondation_meta {
     return {
-        dependencies => [],
+        dependencies => [ 'Fondation::CSRF'],
         defaults     => {},
     };
 }
