@@ -1,0 +1,74 @@
+% layout 'main';
+% title 'Plugin Dependency Graph';
+
+<style>
+  #graph-card.fullscreen {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 1050; margin: 0; border-radius: 0;
+  }
+  #graph-card.fullscreen .card-body {
+    display: flex; align-items: center; justify-content: center;
+    overflow: auto; padding: 2rem;
+  }
+  #graph-card.fullscreen .mermaid { width: 100%; height: auto; }
+  #graph-card.fullscreen .mermaid svg { max-width: 100%; height: auto; }
+  #graph-card.fullscreen .legend { display: none; }
+  #graph-card.fullscreen .card-header { border-radius: 0; }
+  #graph-card.fullscreen #fs-close { display: inline-block !important; }
+</style>
+
+<div class="container-fluid mt-4">
+  <h1 class="mb-4">
+    Plugin Dependency Graph
+    <button class="btn btn-sm btn-outline-secondary ms-2" id="fs-toggle"
+            title="Toggle fullscreen" aria-label="Toggle fullscreen">
+      <i class="fas fa-expand"></i>
+    </button>
+  </h1>
+
+  <div class="card shadow-sm" id="graph-card">
+    <div class="card-header py-2 d-flex justify-content-between align-items-center">
+      <div class="legend">
+        <span class="badge bg-secondary me-2">──▶ dependencies (solid)</span>
+        <span class="badge bg-light text-dark border">- -▶ before / after (dashed)</span>
+      </div>
+      <button class="btn btn-sm btn-outline-secondary d-none" id="fs-close"
+              title="Exit fullscreen" aria-label="Exit fullscreen">
+        <i class="fas fa-compress"></i>
+      </button>
+    </div>
+    <div class="card-body bg-white">
+      <pre class="mermaid">
+<%== $mermaid =%>
+      </pre>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    flowchart: { useMaxWidth: true, htmlLabels: true }
+  });
+
+  (function() {
+    var card = document.getElementById('graph-card');
+    var toggleBtn = document.getElementById('fs-toggle');
+    var closeBtn  = document.getElementById('fs-close');
+    var icon = toggleBtn.querySelector('i');
+
+    function enterFs() { card.classList.add('fullscreen');    icon.className = 'fas fa-compress'; }
+    function exitFs()  { card.classList.remove('fullscreen'); icon.className = 'fas fa-expand';   }
+
+    toggleBtn.addEventListener('click', function() {
+      card.classList.contains('fullscreen') ? exitFs() : enterFs();
+    });
+    closeBtn.addEventListener('click', exitFs);
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && card.classList.contains('fullscreen')) exitFs();
+    });
+  })();
+</script>

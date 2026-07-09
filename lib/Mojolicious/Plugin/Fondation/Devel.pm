@@ -28,6 +28,12 @@ sub register ($self, $app, $config) {
                 controller => 'Routes',
                 action     => 'routes'
             );
+        $app->routes->get('/fondation/graph')
+            ->requires('fondation.group' => 'admin')
+            ->to(
+                controller => 'Graph',
+                action     => 'graph'
+            );
     }
 
     return $self;

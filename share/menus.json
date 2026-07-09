@@ -26,5 +26,14 @@
     "condition":    "group:admin,mode:!production",
     "parent_title": "Devel",
     "description":  "Browse loaded plugins, their config, and resources"
+  },
+  {
+    "title":        "Graph",
+    "link":         "/fondation/graph",
+    "icon":         "fas fa-project-diagram",
+    "menu":         "devel_menu",
+    "condition":    "group:admin,mode:!production",
+    "parent_title": "Devel",
+    "description":  "Dependency graph of loaded plugins"
   }
 ]
