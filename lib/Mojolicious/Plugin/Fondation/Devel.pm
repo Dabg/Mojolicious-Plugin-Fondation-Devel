@@ -4,8 +4,6 @@ package Mojolicious::Plugin::Fondation::Devel;
 
 use Mojo::Base 'Mojolicious::Plugin', -signatures;
 
-our $VERSION = '0.01';
-
 sub fondation_meta {
     return {
         dependencies => [ 'Fondation::CSRF'],
